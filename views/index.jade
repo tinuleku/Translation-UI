@@ -1,0 +1,118 @@
+extends layout
+
+block stylesheet
+	link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+	link(rel='stylesheet', href='/stylesheets/index.css')
+
+block script
+	script(type="text/javascript", src="/js/bootstrap/tooltip.js")
+	script(type="text/javascript", src="/js/bootstrap/modal.js")
+	script(type="text/javascript", src="/js/bootstrap/popover.js")
+	script(type="text/javascript", src="/js/index.js")
+
+mixin display_node(json, depth)
+	ul.list-unstyled
+		for key in Object.keys(json)
+			li
+				if (typeof json[key] == 'object')
+					div.node.row(key="#{key}")
+						div.col-xs-4
+							div(style="margin-left:#{depth*18}px;")
+								a(href="#" class="node-caret" data-toggle="tooltip" data-placement="bottom" title="Append")
+									i.fa.fa-caret-right.fa-fw
+									|&nbsp;#{key}
+								|&nbsp;&nbsp;
+								a(href="#" class="node-action node-action-edit hidden" data-toggle="tooltip" data-placement="bottom" title="Edit")
+									i.fa.fa-pencil
+								|&nbsp;
+								a(href="#" class="node-action node-action-delete hidden" data-toggle="tooltip" data-placement="bottom" title="Delete")
+									i.fa.fa-times
+								|&nbsp;
+								a(href="#" class="node-action hidden" data-toggle="tooltip" data-placement="bottom" title="Add key")
+									i.fa.fa-plus
+						div.col-xs-4
+							div(style="border-left: 1px grey solid;")
+								span
+									|&nbsp;
+						div.col-xs-4
+							div(style="border-left: 1px grey solid;")
+								span
+									|&nbsp;
+					div.node-children.hidden
+						+display_node(json[key], depth+1)
+				else
+					div.node-leaf.row(key="#{key}")
+						div.col-xs-4
+							div(style="margin-left:#{(depth+1)*18}px;")
+								span
+									|&nbsp;#{key}&nbsp;&nbsp;	
+								a(href="#" class="node-action hidden")
+									i.fa.fa-pencil
+								|&nbsp;
+								a(href="#" class="node-action hidden")
+									i.fa.fa-times
+						div.col-xs-4.col-ref
+							div(style="border-left: 1px grey solid;")
+								div
+									input(class="form-control hidden" value="#{json[key]}")
+									span.leaf-value
+										|#{json[key]}
+						div.col-xs-4.col-lng
+							div(default_value="#{json[key]}" style="border-left: 1px grey solid;")
+								div
+									input(class="form-control hidden")
+									span
+										|&nbsp;
+
+mixin display_header()
+	div.row(style="border-bottom: 2px grey solid;")
+		div.col-xs-4
+			div.text-center(style="height: 35px; font-size: 20px;")
+				span
+					|Keys
+			div(style="margin-top: -33px;")	
+				a(id="append" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" appended="false")
+					|append all					
+		div.col-xs-4
+			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
+				span
+					|English
+		div.col-xs-4
+			div(class="text-center" style="border-left: 1px grey solid; height: 35px;")
+				div(class="btn-group dropdown-select")
+					button(type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown")
+						span#lng_value(class="select-value" value="")
+							|-
+						|&nbsp;
+						span.caret
+					ul(class="dropdown-menu text-left")
+						for lng in available_lng
+							- if (lng.lng == "") {
+								li.disabled
+									a(href="#" value="#{lng.lng}" class="disabled")
+										|#{lng.name} (#{lng.lng})
+							- } else {
+								li
+									a(href="#" value="#{lng.lng}")
+										|#{lng.name} (#{lng.lng})
+							- }
+
+block content
+	div.row
+		div(class="page-header header")
+			ul(class="nav nav-pills pull-right")
+				li
+					button(id="button_save" class="btn btn-primary" style="margin-top: -10px;")
+						|Save
+			h3
+				|Translator
+				small
+					|&nbsp;-&nbsp;
+					span#state
+						|unsaved
+	div(class="row")
+		div(class="panel panel-default")
+			div(class="panel-body")
+				+display_header()
+				div#root
+					+display_node(json_ref, 0)
