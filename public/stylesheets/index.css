@@ -1,0 +1,28 @@
+.node .node-children {
+	padding-left: 18px;
+}
+
+.node.active, .node-leaf.active {
+	background: rgb(198,242,229); /* Old browsers */
+}
+
+.node.active .node-children {
+	background: white;
+}
+
+.node-leaf {
+	background: #f0f0f0;
+}
+
+.col-lng > div > div, .col-ref > div > div {
+	margin-left: 15px;
+}
+
+.col-lng > div > div > span, .col-ref > div > div > span {
+	margin-left: 13px;
+}
+
+input.form-control {
+	height: 20px;
+	background: transparent;
+}
