@@ -18,17 +18,17 @@ mixin display_node(json, depth)
 					div.node.row(key="#{key}")
 						div.col-xs-4
 							div(style="margin-left:#{depth*18}px;")
-								a(href="#" class="node-caret" data-toggle="tooltip" data-placement="bottom" title="Append")
+								a(href="#" class="node-caret" data-toggle="tooltip" data-placement="bottom" title="Expend")
 									i.fa.fa-caret-right.fa-fw
 									|&nbsp;#{key}
 								|&nbsp;&nbsp;
-								a(href="#" class="node-action node-action-edit hidden" data-toggle="tooltip" data-placement="bottom" title="Edit")
+								a(href="#" class="node-action node-action-edit hidden" data-toggle="popover")
 									i.fa.fa-pencil
 								|&nbsp;
-								a(href="#" class="node-action node-action-delete hidden" data-toggle="tooltip" data-placement="bottom" title="Delete")
+								a(href="#" class="node-action node-action-delete hidden")
 									i.fa.fa-times
 								|&nbsp;
-								a(href="#" class="node-action hidden" data-toggle="tooltip" data-placement="bottom" title="Add key")
+								a(href="#" class="node-action hidden" data-toggle="tooltip")
 									i.fa.fa-plus
 						div.col-xs-4
 							div(style="border-left: 1px grey solid;")
@@ -46,20 +46,20 @@ mixin display_node(json, depth)
 							div(style="margin-left:#{(depth+1)*18}px;")
 								span
 									|&nbsp;#{key}&nbsp;&nbsp;	
-								a(href="#" class="node-action hidden")
+								a(href="#" class="node-action node-action-edit hidden")
 									i.fa.fa-pencil
 								|&nbsp;
 								a(href="#" class="node-action hidden")
 									i.fa.fa-times
 						div.col-xs-4.col-ref
 							div(style="border-left: 1px grey solid;")
-								div
+								div.leaf
 									input(class="form-control hidden" value="#{json[key]}")
 									span.leaf-value
 										|#{json[key]}
 						div.col-xs-4.col-lng
 							div(default_value="#{json[key]}" style="border-left: 1px grey solid;")
-								div
+								div.leaf
 									input(class="form-control hidden")
 									span
 										|&nbsp;
@@ -71,8 +71,8 @@ mixin display_header()
 				span
 					|Keys
 			div(style="margin-top: -33px;")	
-				a(id="append" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" appended="false")
-					|append all					
+				a(id="expend" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended="false")
+					|expend all					
 		div.col-xs-4
 			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
 				span
@@ -98,11 +98,12 @@ mixin display_header()
 							- }
 
 block content
-	div.row
-		div(class="page-header header")
+	div.navbar.navbar-default.navbar-fixed-top
+		div.container
+			//div(class="page-header header")
 			ul(class="nav nav-pills pull-right")
 				li
-					button(id="button_save" class="btn btn-primary" style="margin-top: -10px;")
+					button(id="button_save" class="btn btn-primary" style="margin-top: 10px;")
 						|Save
 			h3
 				|Translator
@@ -110,9 +111,25 @@ block content
 					|&nbsp;-&nbsp;
 					span#state
 						|unsaved
-	div(class="row")
+	div(class="container")
 		div(class="panel panel-default")
 			div(class="panel-body")
 				+display_header()
 				div#root
 					+display_node(json_ref, 0)
+				div#popover_edit.hidden
+					div.head
+						|Edit key
+					div.content
+						div.row
+							div.form-horizontal
+								div.col-xs-12
+									div.form-group
+										label(for="#input_name" class="col-xs-5 text-right")
+											|Key name
+										div.col-xs-7
+											input(id="input_name" class="form-control" placeholder="Key name")
+						div.row
+							div.col-xs-12.text-right
+								button(id="edit_key_button" type="button" class="btn btn-sm btn-primary")
+									|Save

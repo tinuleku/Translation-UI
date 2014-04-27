@@ -1,9 +1,20 @@
 $(document).ready(function() {
 	
+	// code allowing one popover at the same time
+	$('body').on('click', function (e) {
+	    $('[data-toggle="popover"]').each(function () {
+	        //the 'is' for buttons that trigger popups
+	        //the 'has' for icons within a button that triggers a popup
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).parent().children('.popover').remove();
+	        }
+	    });
+	});
+	
 	var selected_line;
 	
 	/**
-	 * Append/reduce a node.
+	 * Expend/reduce a node.
 	 */
 	$(".node a.node-caret").click(function(e) {
 		e.preventDefault();
@@ -44,10 +55,28 @@ $(document).ready(function() {
 	/**
 	 * Key actions
 	 */
-	$(".node-action-edit").click(function(e) {
-		e.preventDefault();
-		// display popover to edit the key name.
-		
+	$('.node-action-edit').popover({
+	    html: true,
+	    placement: 'bottom',
+	    title: function () {
+	        return $("#popover_edit > .head").text();
+	    },
+	    content: function () {
+	        return $("#popover_edit > .content").html();
+	    }
+	});
+	
+	$('.node-action-edit').on('show.bs.popover', function () {
+		$("#input_name").attr('value', selected_line.attr('key'));
+	});
+	
+	$('.node-action-edit').on('shown.bs.popover', function () {
+		var $this = $(this);
+		$this.parent().find("#edit_key_button").click(function(e) {
+			e.preventDefault();
+			// save new key
+			$this.parent().children('.popover').remove();
+		});
 	});
 	
 	$(".node-action-delete").click(function(e) {
@@ -56,13 +85,13 @@ $(document).ready(function() {
 	});
 	
 	/**
-	 * Append/reduce all
+	 * Expend/collapse all
 	 */
-	$("#append").click(function(e) {
+	$("#expend").click(function(e) {
 		e.preventDefault();
-		if ($(this).attr('appended') == 'false') {
-			$(this).attr('appended', 'true');
-			$(this).text('reduce all');
+		if ($(this).attr('expended') == 'false') {
+			$(this).attr('expended', 'true');
+			$(this).text('collapse all');
 			$(".node").each(function() {
 				var child = $(this).parent().children('.node-children');
 				if (child.hasClass('hidden')) {
@@ -71,8 +100,8 @@ $(document).ready(function() {
 				}
 			});
 		} else {
-			$(this).attr('appended', 'false');
-			$(this).text('append all');
+			$(this).attr('expended', 'false');
+			$(this).text('expend all');
 			$(".node").each(function() {
 				var child = $(this).parent().children('.node-children');
 				if (!child.hasClass('hidden')) {

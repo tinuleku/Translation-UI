@@ -122,7 +122,7 @@ exports.retrieveAvailableLng = function(next) {
  */
 exports.renameNode = renameMode = function(node, value) {
 	for (i = 0; i < available_lng.length; i++) {
-		var lng = available_lng[i];console.log(lng);
+		var lng = available_lng[i];
 		(function(lng) {
 			loadLng(lng, function(json_tree) {
 				json_tree = rename_node_rec(node, value, json_tree);
@@ -196,7 +196,7 @@ function add_leaf_rec(parent, value, tree) {
  */
 exports.addNode = function(parent, value) {
 	for (i = 0; i < available_lng.length; i++) {
-		var lng = available_lng[i];console.log(lng);
+		var lng = available_lng[i];
 		(function(lng) {
 			loadLng(lng, function(json_tree) {
 				json_tree = add_node_rec(parent, value, json_tree);

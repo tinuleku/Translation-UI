@@ -1,3 +1,7 @@
+body {
+	padding-top: 80px;
+}
+
 .node .node-children {
 	padding-left: 18px;
 }
@@ -22,7 +26,7 @@
 	margin-left: 13px;
 }
 
-input.form-control {
+.leaf > input.form-control {
 	height: 20px;
 	background: transparent;
 }

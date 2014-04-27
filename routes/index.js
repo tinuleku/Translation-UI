@@ -23,7 +23,6 @@ exports.save = function(req, res) {
 		}
 		else {
 			if (req.body.json_lng && req.body.lng) {
-				console.log(req.body.json_lng);
 				json_handler.saveLngTree(req.body.lng, req.body.json_lng, function(err) {
 					if (err) {
 						console.log(err);
