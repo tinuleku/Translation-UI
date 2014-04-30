@@ -55,15 +55,15 @@ mixin display_node(json, depth)
 									span.glyphicon.glyphicon-send
 						div.col-xs-4.col-ref
 							div(style="border-left: 1px grey solid;")
-								div.leaf
+								div.leaf.ref
 									input(class="form-control hidden leaf_ref" value="#{json[key]}")
 									span.leaf-value
 										|#{json[key]}
 
 						div.col-xs-4.col-lng
 							div(default_value="#{json[key]}" style="border-left: 1px grey solid;")
-								div.leaf
-									input(class="form-control hidden leaf_lng" ref_value="#{json[key]}")
+								div.leaf.target
+									input(class="form-control hidden leaf_lng" ref_value="#{json[key]}").leafinfut
 									span
 										|&nbsp;
 
@@ -73,14 +73,14 @@ mixin display_header()
 			div.text-center(style="height: 35px; font-size: 20px;")
 				span
 					|Keys
-			div.text-right
+			div.text-center
 				span expend&nbsp;
 
 					a(id="expend" href="#" style="font-size: 14px; margin-top: 3px;" expended="false")
 						| all		
 					span
 						|&nbsp;|&nbsp;
-					a(id="expend_empty_leafs" href="#" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
+					a(id="expend_empty" href="#" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
 						| empty leafs
 		div.col-xs-4
 			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
@@ -105,6 +105,9 @@ mixin display_header()
 									a(href="#" value="#{lng.lng}")
 										|#{lng.name} (#{lng.lng})
 							- }
+			div.progress
+				div#progress-bar(class="progress-bar" role="progressbar" style="width:100%;")
+					| choose a lng for % progression
 
 block content
 	div.navbar.navbar-default.navbar-fixed-top
@@ -113,8 +116,6 @@ block content
 			//div(class="page-header header")
 			ul(class="nav nav-pills pull-right")
 				li
-					button(id="translate_all_empty" class="btn btn-primary" style="margin: 10px;")
-						|Translate all empty leafs
 					button(id="button_save" class="btn btn-primary" style="margin: 10px;")
 						|Save
 					
@@ -124,6 +125,7 @@ block content
 					|&nbsp;-&nbsp;
 					span#state
 						|unsaved
+					span#progress-info
 	div(class="container")
 		div(class="panel panel-default")
 			div(class="panel-body")

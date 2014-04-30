@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     // code allowing one popover at the same time
     $('body').on('click', function(e) {
         $('[data-toggle="popover"]').each(function() {
@@ -110,6 +111,28 @@ $(document).ready(function() {
         }
     });
 
+
+    /**
+     * Expend empty leaf
+     */
+    $("#expend_empty").click(function(e) {
+        e.preventDefault();
+        $(".leaf.target").each(function() {
+            // console.log($(this).children("input").val());
+            if ($(this).children("input").val().length == 0) {
+                $(this).parents(".node-children").addClass('empty-leaf');
+                console.log("ce qui suit doit etre vide: " + $(this).children("input").val());
+            };
+        })
+
+        $(".empty-leaf").each(function() {
+            if ($(this).hasClass('hidden')) {
+                $(this).removeClass('hidden');
+                $(this).parent().children(".node").find(".node-caret > i").removeClass("fa-caret-right").addClass("fa-caret-down");
+            }
+        });
+    });
+
     /**
      * Save
      */
@@ -127,6 +150,7 @@ $(document).ready(function() {
                     lng: lng
                 },
                 success: function(data) {
+                    update_leaf_count();
                     $("#state").text(data.alert);
                 }
             });
@@ -199,6 +223,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         load_lng(data.json);
+                        update_leaf_count();
                         root.find('button .select-value').text(selected_item.text()).attr('value', lng);
                     }
                 });
@@ -231,6 +256,9 @@ $(document).ready(function() {
      * Cookies
      */
 
+    /**
+     * Google translate API
+     */
     $(".translate_this").click(function(e) {
         // fetch input element
         var input_elem = $(this).parent().parent().parent().find(".leaf_lng")
@@ -242,7 +270,7 @@ $(document).ready(function() {
         var lng_target = $("#lng_value").attr("value");
         console.log("lng_target: " + lng_target);
 
-        // translate it
+        // translate
         google_translate("en", lng_target, text_to_translate, function(text_translated) {
             console.log("text translated= " + text_translated);
             // set input value
@@ -250,6 +278,25 @@ $(document).ready(function() {
         });
     });
 });
+
+update_leaf_count = function() {
+    var leafcount = 0; //$(".node-leaf").length;
+    var emptyleafcount = 0;
+    $(".leaf.target").each(function() {
+        leafcount++;
+        if ($(this).children(".leafinfut").val() == "") {
+            emptyleafcount++;
+        };
+    })
+    console.log(leafcount);
+    console.log(emptyleafcount);
+    var progress_percent = Math.round(100 * (leafcount - emptyleafcount) / (leafcount));
+    console.log(progress_percent);
+    $("#progress-bar").text(progress_percent + "%");
+    $("#progress-bar").attr("style", "width:" + progress_percent + "%;");
+    $("#progress-info").text(" - translated:" + (leafcount - emptyleafcount) + " / " + leafcount + " leafs (" + progress_percent + "%)");
+}
+
 
 google_translate = function(lng_source, lng_target, string_to_translate, callback) {
     var string_to_translate_urlencoded = encodeURIComponent(string_to_translate);
