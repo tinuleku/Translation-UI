@@ -51,16 +51,19 @@ mixin display_node(json, depth)
 								|&nbsp;
 								a(href="#" class="node-action hidden")
 									i.fa.fa-times
+								a(href="#" class="node-action hidden translate_this")
+									span.glyphicon.glyphicon-send
 						div.col-xs-4.col-ref
 							div(style="border-left: 1px grey solid;")
 								div.leaf
-									input(class="form-control hidden" value="#{json[key]}")
+									input(class="form-control hidden leaf_ref" value="#{json[key]}")
 									span.leaf-value
 										|#{json[key]}
+
 						div.col-xs-4.col-lng
 							div(default_value="#{json[key]}" style="border-left: 1px grey solid;")
 								div.leaf
-									input(class="form-control hidden")
+									input(class="form-control hidden leaf_lng" ref_value="#{json[key]}")
 									span
 										|&nbsp;
 
@@ -72,7 +75,10 @@ mixin display_header()
 					|Keys
 			div(style="margin-top: -33px;")	
 				a(id="expend" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended="false")
-					|expend all					
+					|expend all		
+				br
+				a(id="expend_empty_leafs" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
+					|Expand only empty leafs
 		div.col-xs-4
 			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
 				span
@@ -103,8 +109,11 @@ block content
 			//div(class="page-header header")
 			ul(class="nav nav-pills pull-right")
 				li
-					button(id="button_save" class="btn btn-primary" style="margin-top: 10px;")
+					button(id="translate_all_empty" class="btn btn-primary" style="margin: 10px;")
+						|Translate all empty leafs
+					button(id="button_save" class="btn btn-primary" style="margin: 10px;")
 						|Save
+					
 			h3
 				|Translator
 				small
