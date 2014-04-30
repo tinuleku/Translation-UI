@@ -238,8 +238,12 @@ $(document).ready(function() {
         // fetch data to translate
         var text_to_translate = input_elem.attr("ref_value");
 
+        // fetch target language
+        var lng_target = $("#lng_value").attr("value");
+        console.log("lng_target: " + lng_target);
+
         // translate it
-        google_translate("en", "fr", text_to_translate, function(text_translated) {
+        google_translate("en", lng_target, text_to_translate, function(text_translated) {
             console.log("text translated= " + text_translated);
             // set input value
             input_elem.text(text_translated).attr('value', text_translated);
@@ -250,7 +254,6 @@ $(document).ready(function() {
 google_translate = function(lng_source, lng_target, string_to_translate, callback) {
     var string_to_translate_urlencoded = encodeURIComponent(string_to_translate);
     var google_translate_api_key = $("#API_KEY").attr("key");
-    console.log(google_translate_api_key)
     $.ajax({
         type: "GET",
         dataType: "json",
