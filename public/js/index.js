@@ -249,11 +249,12 @@ $(document).ready(function() {
 
 google_translate = function(lng_source, lng_target, string_to_translate, callback) {
     var string_to_translate_urlencoded = encodeURIComponent(string_to_translate);
-    var API_KEY = $("#API_KEY").attr("key");
+    var google_translate_api_key = $("#API_KEY").attr("key");
+    console.log(google_translate_api_key)
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: "https://www.googleapis.com/language/translate/v2?key=" + API_KEY + "&source=" + lng_source + "&target=" + lng_target + "&q=" + string_to_translate_urlencoded,
+        url: "https://www.googleapis.com/language/translate/v2?key=" + google_translate_api_key + "&source=" + lng_source + "&target=" + lng_target + "&q=" + string_to_translate_urlencoded,
         success: function(data) {
             console.log(data);
             console.log(data.data.translations[0].translatedText);
