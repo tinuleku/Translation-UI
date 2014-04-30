@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     // code allowing one popover at the same time
     $('body').on('click', function(e) {
         $('[data-toggle="popover"]').each(function() {
@@ -249,8 +248,8 @@ $(document).ready(function() {
 });
 
 google_translate = function(lng_source, lng_target, string_to_translate, callback) {
-    var API_KEY = "AIzaSyAmHfe10c3JVcE038-oivpBaqvyHrrWqLs";
     var string_to_translate_urlencoded = encodeURIComponent(string_to_translate);
+    var API_KEY = $("#API_KEY").attr("key");
     $.ajax({
         type: "GET",
         dataType: "json",

@@ -73,12 +73,15 @@ mixin display_header()
 			div.text-center(style="height: 35px; font-size: 20px;")
 				span
 					|Keys
-			div(style="margin-top: -33px;")	
-				a(id="expend" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended="false")
-					|expend all		
-				br
-				a(id="expend_empty_leafs" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
-					|Expand only empty leafs
+			div.text-right
+				span expend&nbsp;
+
+					a(id="expend" href="#" style="font-size: 14px; margin-top: 3px;" expended="false")
+						| all		
+					span
+						|&nbsp;|&nbsp;
+					a(id="expend_empty_leafs" href="#" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
+						| empty leafs
 		div.col-xs-4
 			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
 				span
@@ -106,6 +109,7 @@ mixin display_header()
 block content
 	div.navbar.navbar-default.navbar-fixed-top
 		div.container
+			div#API_KEY(key=api_key).hidden
 			//div(class="page-header header")
 			ul(class="nav nav-pills pull-right")
 				li
