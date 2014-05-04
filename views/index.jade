@@ -51,16 +51,19 @@ mixin display_node(json, depth)
 								|&nbsp;
 								a(href="#" class="node-action hidden")
 									i.fa.fa-times
+								a(href="#" class="node-action hidden translate_this")
+									span.glyphicon.glyphicon-send
 						div.col-xs-4.col-ref
 							div(style="border-left: 1px grey solid;")
-								div.leaf
-									input(class="form-control hidden" value="#{json[key]}")
+								div.leaf.ref
+									input(class="form-control hidden leaf_ref" value="#{json[key]}")
 									span.leaf-value
 										|#{json[key]}
+
 						div.col-xs-4.col-lng
 							div(default_value="#{json[key]}" style="border-left: 1px grey solid;")
-								div.leaf
-									input(class="form-control hidden")
+								div.leaf.target
+									input(class="form-control hidden leaf_lng" ref_value="#{json[key]}").leafinfut
 									span
 										|&nbsp;
 
@@ -70,9 +73,15 @@ mixin display_header()
 			div.text-center(style="height: 35px; font-size: 20px;")
 				span
 					|Keys
-			div(style="margin-top: -33px;")	
-				a(id="expend" href="#" class="pull-right" style="font-size: 14px; margin-top: 3px;" expended="false")
-					|expend all					
+			div.text-center
+				span expend&nbsp;
+
+					a(id="expend" href="#" style="font-size: 14px; margin-top: 3px;" expended="false")
+						| all		
+					span
+						|&nbsp;|&nbsp;
+					a(id="expend_empty" href="#" style="font-size: 14px; margin-top: 3px;" expended_empty_leafs="false")
+						| empty leafs
 		div.col-xs-4
 			div(class="text-center" style="border-left: 1px grey solid; height: 35px; font-size: 20px;")
 				span
@@ -96,21 +105,27 @@ mixin display_header()
 									a(href="#" value="#{lng.lng}")
 										|#{lng.name} (#{lng.lng})
 							- }
+			div.progress
+				div#progress-bar(class="progress-bar" role="progressbar" style="width:100%;")
+					| choose a lng for % progression
 
 block content
 	div.navbar.navbar-default.navbar-fixed-top
 		div.container
+			div#API_KEY(key=api_key).hidden
 			//div(class="page-header header")
 			ul(class="nav nav-pills pull-right")
 				li
-					button(id="button_save" class="btn btn-primary" style="margin-top: 10px;")
+					button(id="button_save" class="btn btn-primary" style="margin: 10px;")
 						|Save
+					
 			h3
 				|Translator
 				small
 					|&nbsp;-&nbsp;
 					span#state
 						|unsaved
+					span#progress-info
 	div(class="container")
 		div(class="panel panel-default")
 			div(class="panel-body")

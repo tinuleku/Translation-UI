@@ -1,79 +1,100 @@
 var moment = require('moment');
 var json_handler = require('../middleware/json_handler.js');
-
+var config = require('../config.js');
 /**
  * GET /
  */
 exports.index = function(req, res) {
-	json_handler.retrieveRefTree(function(json_ref) {
-		json_handler.retrieveAvailableLng(function(available_lng) {
-			res.render('index', {json_ref: json_ref, available_lng: available_lng});
-		});
-	});
+    json_handler.retrieveRefTree(function(json_ref) {
+        json_handler.retrieveAvailableLng(function(available_lng) {
+            res.render('index', {
+                json_ref: json_ref,
+                available_lng: available_lng,
+                api_key: config.api_key
+            });
+        });
+    });
 }
 
 /**
  * Post /save
  */
 exports.save = function(req, res) {
-	json_handler.saveRefTree(req.body.json_ref, function(err) {
-		if (err) {
-			console.log(err);
-			return res.send({code: '500', alert: "An error has occurred"});
-		}
-		else {
-			if (req.body.json_lng && req.body.lng) {
-				json_handler.saveLngTree(req.body.lng, req.body.json_lng, function(err) {
-					if (err) {
-						console.log(err);
-						return res.send({code: '500', alert: "An error has occurred"});
-					}
-					else {
-						return res.send({code: '200', alert: "last save at " + moment().format("HH:mm:ss")});
-					}
-				});
-			}
-			else {
-				return res.send({code: '200', alert: "last save at " + moment().format("HH:mm:ss")});
-			}
-		}
-	});
+    json_handler.saveRefTree(req.body.json_ref, function(err) {
+        if (err) {
+            console.log(err);
+            return res.send({
+                code: '500',
+                alert: "An error has occurred"
+            });
+        } else {
+            if (req.body.json_lng && req.body.lng) {
+                json_handler.saveLngTree(req.body.lng, req.body.json_lng, function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.send({
+                            code: '500',
+                            alert: "An error has occurred"
+                        });
+                    } else {
+                        return res.send({
+                            code: '200',
+                            alert: "last save at " + moment().format("HH:mm:ss")
+                        });
+                    }
+                });
+            } else {
+                return res.send({
+                    code: '200',
+                    alert: "last save at " + moment().format("HH:mm:ss")
+                });
+            }
+        }
+    });
 }
 
 /**
  * Post /edit_lng
- * load lng file to the GUI 
+ * load lng file to the GUI
  */
 exports.edit_lng = function(req, res) {
-	json_handler.retrieveLngTree(req.body.lng, function(json) {
-		res.send({json: json});
-	});
+    json_handler.retrieveLngTree(req.body.lng, function(json) {
+        res.send({
+            json: json
+        });
+    });
 }
 
 /**
  * Post /rename_key
- * load lng file to the GUI 
+ * load lng file to the GUI
  */
 exports.rename_key = function(req, res) {
-	json_handler.removeNode(req.body.parent, req.body.value, function(err) {
-		if (err) {
-			console.log(err);
-			return res.send({code: '500', alert: "An error has occurred"});
-		} else {
-			
-		}
-	});
+    json_handler.removeNode(req.body.parent, req.body.value, function(err) {
+        if (err) {
+            console.log(err);
+            return res.send({
+                code: '500',
+                alert: "An error has occurred"
+            });
+        } else {
+
+        }
+    });
 }
 
 exports.delete_key = function(req, res) {
-	json_handler.removeNode(req.body.parent, req.body.value, function(err) {
-		if (err) {
-			console.log(err);
-			return res.send({code: '500', alert: "An error has occurred"});
-		} else {
-			
-		}
-	});
+    json_handler.removeNode(req.body.parent, req.body.value, function(err) {
+        if (err) {
+            console.log(err);
+            return res.send({
+                code: '500',
+                alert: "An error has occurred"
+            });
+        } else {
+
+        }
+    });
 }
 
 /**
